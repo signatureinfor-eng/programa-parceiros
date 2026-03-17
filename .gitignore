@@ -1,0 +1,9 @@
+# Local development files
+dist/
+.gemini/
+meres_projeto_parceiros.zip
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db

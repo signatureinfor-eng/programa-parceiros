@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mères | Editor de Layout</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="editor-body">
+    <header class="top-nav">
+        <div class="nav-left">
+            <div class="logo-box">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            </div>
+            <div class="nav-breadcrumb">
+                <div class="breadcrumb-item select-wrapper">
+                    <select id="formSelector" class="modern-selector-flat"></select>
+                </div>
+                <span class="breadcrumb-separator">/</span>
+                <div class="breadcrumb-item title-wrapper">
+                    <input type="text" id="topFormTitle" class="form-title-input" value="Formulário sem título">
+                    <button class="nav-icon-btn mini" id="createNewFormBtnTop" title="Novo Formulário">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    </button>
+                </div>
+                <span class="save-status-flat">Salvo</span>
+            </div>
+        </div>
+        <div class="nav-center">
+            <div class="nav-tabs">
+                <div class="nav-tab active" data-main-tab="questions">Perguntas</div>
+                <div class="nav-tab" data-main-tab="responses">Respostas</div>
+                <div class="nav-tab" data-main-tab="settings">Configurações</div>
+            </div>
+        </div>
+        <div class="nav-right">
+            <button class="nav-icon-btn" id="previewBtnTop" title="Visualizar">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <button class="btn-publish" id="saveAllBtn">Publicar</button>
+            <div class="user-avatar">JD</div>
+        </div>
+    </header>
+
+    <main class="editor-layout">
+        <!-- LEFT SIDEBAR: Elements & Styles -->
+        <aside class="sidebar-left">            <div class="sidebar-section">
+                <h4 class="section-title">ELEMENTOS</h4>
+                
+                <div class="element-category">
+                    <span class="category-label">Básicos</span>
+                    <div class="element-grid">
+                        <button class="element-btn" data-type="text" title="Resposta Curta">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                            Texto
+                        </button>
+                        <button class="element-btn" data-type="paragraph" title="Parágrafo">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
+                            Parágrafo
+                        </button>
+                        <button class="element-btn" data-type="email" title="E-mail">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            E-mail
+                        </button>
+                        <button class="element-btn" data-type="tel" title="Telefone">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            Telefone
+                        </button>
+                        <button class="element-btn" data-type="cpf" title="CPF">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="12" y2="16"/></svg>
+                            CPF
+                        </button>
+                        <button class="element-btn" data-type="cnpj" title="CNPJ">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/><path d="M13 13h4"/><path d="M13 17h4"/></svg>
+                            CNPJ
+                        </button>
+                    </div>
+                </div>
+
+                <div class="element-category">
+                    <span class="category-label">Seleção</span>
+                    <div class="element-grid">
+                        <button class="element-btn" data-type="radio" title="Escolha Única">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>
+                            Single
+                        </button>
+                        <button class="element-btn" data-type="checkbox" title="Caixas de Seleção">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><path d="m9 12 2 2 4-4"/></svg>
+                            Caixas de Seleção
+                        </button>
+                        <button class="element-btn" data-type="select" title="Seleção (Dropdown)">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 15l5 5 5-5"/><path d="M7 9l5-5 5 5"/></svg>
+                            Seleção
+                        </button>
+                    </div>
+                </div>
+
+                <div class="element-category">
+                    <span class="category-label">Avançado</span>
+                    <div class="element-grid">
+                        <button class="element-btn" data-type="file" title="Upload de Arquivo">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Upload
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="sidebar-divider"></div>
+
+            <div class="sidebar-section">
+                <h4 class="section-title">ESTILOS DO FORM</h4>
+                <div class="style-group">
+                    <label>Cor de Destaque</label>
+                    <div class="color-palette">
+                        <div class="color-swatch active" style="background: #6D5BFF;" data-color="#6D5BFF"></div>
+                        <div class="color-swatch" style="background: #FF4D4D;" data-color="#FF4D4D"></div>
+                        <div class="color-swatch" style="background: #00D084;" data-color="#00D084"></div>
+                        <div class="color-swatch" style="background: #F8B400;" data-color="#F8B400"></div>
+                    </div>
+                </div>
+
+                <div class="style-group">
+                    <label>Tipografia</label>
+                    <select class="style-select" id="fontSelector">
+                        <option value="'Inter', sans-serif">Inter (Moderna)</option>
+                        <option value="'Roboto', sans-serif">Roboto</option>
+                        <option value="'Outfit', sans-serif">Outfit</option>
+                    </select>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER CANVAS -->
+        <div class="editor-canvas" id="editorCanvas">
+            <div class="canvas-center">
+                
+                <!-- Form Header Card -->
+                <div class="form-card header-card active" id="formHeaderCard">
+                    <div class="banner-preview" id="bannerPreview">
+                        <button class="btn-change-cover" id="changeCoverBtn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                            Mudar Capa
+                        </button>
+                    </div>
+                    <div class="header-card-content">
+                        <div class="page-icon-wrapper" id="formIcon">📝</div>
+                        <div class="form-title-area">
+                            <input type="text" id="formTitleInput" class="main-title-input" placeholder="Título do Formulário">
+                            <textarea id="formSubtitleInput" class="main-subtitle-input" placeholder="Descrição (opcional)"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fields List -->
+                <div id="fieldsContainer">
+                    <!-- Questions card injected here -->
+                </div>
+
+                <!-- Responses View (Hidden by default) -->
+                <div id="responsesView" class="hidden">
+                    <div class="responses-summary">
+                        <h2 id="responseCounter">0 respostas</h2>
+                        <button class="btn-ghost" id="clearResponsesBtn">Limpar Tudo</button>
+                    </div>
+                    <div id="responsesList" class="responses-list">
+                        <!-- Responses will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Settings View (Hidden by default) -->
+                <div id="settingsView" class="hidden">
+                    <div class="settings-header">
+                        <h2>Configurações do Formulário</h2>
+                    </div>
+                    
+                    <div class="settings-grid">
+                        <div class="form-card settings-card">
+                            <h3>Apresentação</h3>
+                            <div class="settings-item">
+                                <label>Mensagem de Confirmação</label>
+                                <p class="settings-help">Exibida após o envio do formulário.</p>
+                                <textarea id="successMessageInput" class="settings-textarea" placeholder="Ex: Sua resposta foi registrada."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-card settings-card">
+                            <h3>Respostas</h3>
+                            <div class="settings-item">
+                                <div class="settings-row">
+                                    <div class="settings-text">
+                                        <label>Coletar endereços de e-mail</label>
+                                        <p class="settings-help">Adiciona um campo de e-mail obrigatório.</p>
+                                    </div>
+                                    <div class="toggle-switch" id="collectEmailToggle"></div>
+                                </div>
+                            </div>
+                            <div class="settings-item">
+                                <div class="settings-row">
+                                    <div class="settings-text">
+                                        <label>Limitar a 1 resposta</label>
+                                        <p class="settings-help">Requer que o usuário preencha apenas uma vez.</p>
+                                    </div>
+                                    <div class="toggle-switch" id="limitOneToggle"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-card settings-card">
+                            <h3>Avançado</h3>
+                            <div class="settings-item">
+                                <label>Webhook URL (Opcional)</label>
+                                <p class="settings-help">Envie os dados das respostas para outro serviço.</p>
+                                <input type="text" id="webhookInput" class="style-select" placeholder="https://api.seuservico.com/webhook">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add-question-container">
+                    <button class="btn-add-question" id="addFieldBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Adicionar Pergunta
+                    </button>
+                </div>
+
+                <!-- Form Footer Preview -->
+                <div class="form-card footer-preview-card">
+                    <div class="info-box-preview">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        <textarea id="formInfoInput" class="info-preview-text" placeholder="Informações de rodapé..."></textarea>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR: Question Settings -->
+        <aside class="sidebar-right">
+            <div id="settingsContainer">
+                <div class="empty-settings">
+                    <p>Selecione uma pergunta para editar suas propriedades</p>
+                </div>
+            </div>
+
+            <div class="pro-tip-box">
+                <h5 class="pro-tip-title">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    Dica Profissional
+                </h5>
+                <p>Use saltos lógicos para criar caminhos personalizados para seus respondentes com base nas respostas.</p>
+                <a href="#" class="learn-more">Saiba Mais</a>
+            </div>
+        </aside>
+
+        <!-- Preview Area (Hidden) -->
+        <div class="preview-overlay hidden" id="previewOverlay">
+            <div class="preview-header">
+                <h3>Visualização em tempo real</h3>
+                <button id="closePreviewBtn" class="btn-close-preview">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Fechar Visualização
+                </button>
+            </div>
+            <div class="preview-frame-container">
+                <iframe id="previewFrame" src="index.html"></iframe>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="editor.js"></script>
+</body>
+</html>
