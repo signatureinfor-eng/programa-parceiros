@@ -44,11 +44,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- INITIALIZATION ---
     function init() {
+        checkEmbeddedMode();
         populateFormSelector();
         applyThemeToEditor();
         updateEditorUI();
         updateHeaderSettings(); // Ensure sidebar is initialized
         setupEventListeners();
+    }
+
+    function checkEmbeddedMode() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('embedded') === 'true') {
+            const topNav = document.querySelector('.top-nav');
+            const editorLayout = document.querySelector('.editor-layout');
+            const embeddedHeader = document.getElementById('embeddedHeader');
+            
+            if (topNav) topNav.style.display = 'none';
+            if (embeddedHeader) embeddedHeader.classList.remove('hidden');
+            
+            if (editorLayout) {
+                editorLayout.style.marginTop = '0';
+                editorLayout.style.height = '100vh';
+            }
+        }
     }
 
     function setupEventListeners() {
@@ -57,13 +75,17 @@ document.addEventListener('DOMContentLoaded', () => {
             tab.addEventListener('click', () => {
                 const mode = tab.dataset.mainTab;
                 document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+                
+                // Sync all tabs with the same mode
+                document.querySelectorAll(`.nav-tab[data-main-tab="${mode}"]`).forEach(t => t.classList.add('active'));
+
                 if (mode === 'preview') showPreview();
                 if (mode === 'questions') {
                     previewOverlay.classList.add('hidden');
                     responsesView.classList.add('hidden');
                     fieldsContainer.classList.remove('hidden');
                     formHeaderCard.classList.remove('hidden');
+                    settingsView.classList.add('hidden'); // Fix: ensure settings hidden
                     if (addQuestionContainer) addQuestionContainer.classList.remove('hidden');
                     if (footerPreviewCard) footerPreviewCard.classList.remove('hidden');
                     renderQuestions();
@@ -73,6 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     responsesView.classList.remove('hidden');
                     fieldsContainer.classList.add('hidden');
                     formHeaderCard.classList.add('hidden');
+                    settingsView.classList.add('hidden');
                     if (addQuestionContainer) addQuestionContainer.classList.add('hidden');
                     if (footerPreviewCard) footerPreviewCard.classList.add('hidden');
                     renderResponses();
@@ -93,21 +116,32 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Form Selection
-        formSelector.addEventListener('change', () => {
-            updateEditorUI();
-            updatePreview();
+        // Form Selection Sync
+        const allSelectors = document.querySelectorAll('#formSelector, #formSelectorSidebar');
+        allSelectors.forEach(select => {
+            select.addEventListener('change', (e) => {
+                const val = e.target.value;
+                allSelectors.forEach(s => s.value = val);
+                updateEditorUI();
+                updatePreview();
+            });
         });
 
         // Header Card Sync & Selection
         [formTitleInput, formSubtitleInput, formInfoInput].forEach(input => {
             input.addEventListener('input', () => {
-                const slug = formSelector.value;
+                const slug = formSelector.value || (document.getElementById('formSelectorSidebar') ? document.getElementById('formSelectorSidebar').value : '');
                 if (!currentConfig[slug]) return;
                 currentConfig[slug].title = formTitleInput.value;
                 currentConfig[slug].subtitle = formSubtitleInput.value;
                 currentConfig[slug].infoText = formInfoInput.value;
-                topFormTitle.value = formTitleInput.value;
+                if (topFormTitle) topFormTitle.value = formTitleInput.value;
+                
+                // Update names in selectors
+                allSelectors.forEach(select => {
+                    const opt = select.querySelector(`option[value="${slug}"]`);
+                    if (opt) opt.textContent = formTitleInput.value;
+                });
             });
         });
 
@@ -149,33 +183,47 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('addFieldBtn').addEventListener('click', () => addNewField());
 
         // Global Actions
-        document.getElementById('saveAllBtn').addEventListener('click', saveConfig);
-        document.getElementById('createNewFormBtnTop').addEventListener('click', createForm);
+        document.querySelectorAll('#saveAllBtn, #saveAllBtnSidebar').forEach(btn => {
+            btn.addEventListener('click', saveConfig);
+        });
+        
+        document.querySelectorAll('#createNewFormBtnTop, #createNewFormBtnSidebar').forEach(btn => {
+            btn.addEventListener('click', createForm);
+        });
+
         document.getElementById('clearResponsesBtn').addEventListener('click', clearResponses);
         
         // Preview Action
-        document.getElementById('previewBtnTop').addEventListener('click', showPreview);
-        document.getElementById('closePreviewBtn').addEventListener('click', () => {
+        const previewBtn = document.getElementById('previewBtnTop');
+        if (previewBtn) previewBtn.addEventListener('click', showPreview);
+        
+        const closePreviewBtn = document.getElementById('closePreviewBtn');
+        if (closePreviewBtn) closePreviewBtn.addEventListener('click', () => {
             previewOverlay.classList.add('hidden');
         });
     }
 
     // --- UI RENDERING ---
     function populateFormSelector() {
-        const currentVal = formSelector.value;
-        formSelector.innerHTML = '';
-        formSelector.className = 'modern-selector-flat'; // Ensure correct class
-        Object.keys(currentConfig).forEach(slug => {
-            const opt = document.createElement('option');
-            opt.value = slug;
-            opt.textContent = currentConfig[slug].title;
-            formSelector.appendChild(opt);
+        const allSelectors = document.querySelectorAll('#formSelector, #formSelectorSidebar');
+        allSelectors.forEach(select => {
+            const currentVal = select.value;
+            select.innerHTML = '';
+            // select.className = 'modern-selector-flat'; // Already set in HTML for sidebar
+            Object.keys(currentConfig).forEach(slug => {
+                const opt = document.createElement('option');
+                opt.value = slug;
+                opt.textContent = currentConfig[slug].title;
+                select.appendChild(opt);
+            });
+            if (currentVal && currentConfig[currentVal]) select.value = currentVal;
+            else if (currentConfig['partner']) select.value = 'partner'; // Default
         });
-        if (currentVal && currentConfig[currentVal]) formSelector.value = currentVal;
     }
 
     function updateEditorUI() {
-        const slug = formSelector.value;
+        const allSelectors = document.querySelectorAll('#formSelector, #formSelectorSidebar');
+        const slug = allSelectors[0].value;
         const form = currentConfig[slug];
         if (!form) return;
 
@@ -534,7 +582,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update Public Link
         const publicLinkInput = document.getElementById('publicLinkInput');
         if (publicLinkInput) {
-            const baseUrl = window.location.origin + window.location.pathname.replace('editor.html', '');
+            let baseUrl = window.location.origin + window.location.pathname.replace('editor.html', '');
+            if (window.location.protocol === 'file:') {
+                baseUrl = 'https://parceiros.meres.com.br/';
+            }
             const formSlug = slug === 'partner' ? '' : slug;
             publicLinkInput.value = baseUrl + formSlug;
         }

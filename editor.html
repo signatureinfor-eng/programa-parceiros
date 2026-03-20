@@ -6,9 +6,8 @@
     <title>Mères | Editor de Layout</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.0.2">
 </head>
 <body class="editor-body">
     <header class="top-nav">
@@ -48,7 +47,39 @@
 
     <main class="editor-layout">
         <!-- LEFT SIDEBAR: Elements & Styles -->
-        <aside class="sidebar-left">            <div class="sidebar-section">
+        <aside class="sidebar-left">
+            <!-- Sidebar Header for Embedded Mode -->
+            <div id="embeddedHeader" class="hidden" style="margin-bottom: 32px;">
+                <div class="sidebar-section">
+                    <h4 class="section-title">GERENCIAR FORMULÁRIOS</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <div class="select-wrapper">
+                            <select id="formSelectorSidebar" class="modern-selector-flat" style="width: 100%; max-width: none; border: 1.5px solid var(--border-color); background-color: var(--bg-color);"></select>
+                        </div>
+                        <button class="btn-publish" id="createNewFormBtnSidebar" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Novo Formulário
+                        </button>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h4 class="section-title">NAVEGAÇÃO</h4>
+                    <div class="nav-tabs-sidebar" style="display: flex; flex-direction: column; gap: 8px;">
+                        <div class="nav-tab active" data-main-tab="questions" style="padding: 10px; border-radius: 8px;">Perguntas</div>
+                        <div class="nav-tab" data-main-tab="responses" style="padding: 10px; border-radius: 8px;">Respostas</div>
+                        <div class="nav-tab" data-main-tab="settings" style="padding: 10px; border-radius: 8px;">Configurações</div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section" style="margin-top: 10px;">
+                    <button class="btn-submit" id="saveAllBtnSidebar" style="padding: 12px;">Publicar Alterações</button>
+                </div>
+                
+                <div class="sidebar-divider"></div>
+            </div>
+
+            <div class="sidebar-section">
                 <h4 class="section-title">ELEMENTOS</h4>
                 
                 <div class="element-category">

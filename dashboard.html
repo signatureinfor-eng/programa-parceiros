@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mères | Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=1.0.3">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="app.js?v=1.0.1"></script>
+</head>
+<body class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="32" height="32" rx="8" fill="var(--primary-color)"/>
+                <path d="M10 22V10L16 16L22 10V22" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Mères</span>
+        </div>
+
+        <nav class="nav-links">
+            <a href="dashboard.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Dashboard</span>
+            </a>
+            <a href="leads.html" class="nav-item">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Indicados / Leads</span>
+            </a>
+            <a href="admin-form.html" class="nav-item" id="nav-editor">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                <span>Editor de Formulário</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <div class="user-avatar-small" id="userInitials">JD</div>
+                <div style="overflow: hidden;">
+                    <p style="font-size: 14px; font-weight: 600; color: var(--sidebar-active); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" id="userName">João Meres</p>
+                    <p style="font-size: 12px; color: var(--sidebar-text);" id="userRole">Administrador</p>
+                </div>
+            </div>
+            <a href="#" class="nav-item" id="logoutBtn" style="color: var(--status-danger);">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>Sair</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="page-header">
+            <h1 class="page-title">Dashboard</h1>
+            <p style="color: var(--text-muted);">Visão geral das suas indicações e desempenho.</p>
+        </header>
+
+        <section class="metrics-grid">
+            <div class="metric-card">
+                <p class="metric-label">Total de Indicações</p>
+                <p class="metric-value">124</p>
+            </div>
+            <div class="metric-card metric-accent-green">
+                <p class="metric-label">Prontos para Pagamento</p>
+                <p class="metric-value">42</p>
+            </div>
+            <div class="metric-card metric-accent-amber">
+                <p class="metric-label">Pendentes</p>
+                <p class="metric-value">68</p>
+            </div>
+            <div class="metric-card metric-accent-red">
+                <p class="metric-label">Negados</p>
+                <p class="metric-value">14</p>
+            </div>
+        </section>
+
+        <section class="charts-grid">
+            <div class="chart-container">
+                <h3 style="margin-bottom: 20px; font-size: 16px;">Indicações por Mês</h3>
+                <canvas id="leadsChart"></canvas>
+            </div>
+            <div class="chart-container">
+                <h3 style="margin-bottom: 20px; font-size: 16px;">Distribuição de Status</h3>
+                <canvas id="statusChart"></canvas>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Initialize Charts when DOM is ready
+        document.addEventListener("DOMContentLoaded", () => {
+            // Data for Bar Chart
+            const ctxLeads = document.getElementById('leadsChart').getContext('2d');
+            new Chart(ctxLeads, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                    datasets: [
+                        {
+                            label: 'Total',
+                            data: [12, 19, 15, 22, 28, 32],
+                            backgroundColor: '#1B4FD8',
+                            borderRadius: 4
+                        },
+                        {
+                            label: 'Aprovadas',
+                            data: [8, 12, 10, 15, 20, 22],
+                            backgroundColor: '#10B981',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, grid: { display: false } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Data for Doughnut Chart
+            const ctxStatus = document.getElementById('statusChart').getContext('2d');
+            new Chart(ctxStatus, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Pronto', 'Pendente', 'Negado'],
+                    datasets: [{
+                        data: [42, 68, 14],
+                        backgroundColor: ['#10B981', '#F59E0B', '#EF4444'],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+
+            // Role-based visibility for Editor
+            const session = JSON.parse(sessionStorage.getItem("user_session"));
+            if (session && session.role !== 'adm') {
+                document.getElementById('nav-editor').style.display = 'none';
+            }
+            if (session) {
+                document.getElementById('userName').textContent = session.name;
+                document.getElementById('userInitials').textContent = session.name.split(' ').map(n => n[0]).join('');
+            }
+        });
+    </script>
+</body>
+</html>
